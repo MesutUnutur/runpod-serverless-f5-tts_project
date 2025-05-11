@@ -7,6 +7,8 @@ from io import BytesIO
 from scipy.io.wavfile import write
 import uuid  # To generate unique names
 import boto3
+from dotenv import load_dotenv
+load_dotenv()
 
 f5tts = F5TTS()
 
@@ -51,12 +53,11 @@ def handler(job):
 
 
         audio_output_path = output_wave_file
-
-        R2_ACCESS_KEY_ID = "044d0781c69d25d9df28136537946eaa"
-        R2_SECRET_ACCESS_KEY = "ae489d15672c76a480a3788e48be294efa591228871e166c41cb9bc3a6135c9c"
-        R2_ENDPOINT_URL = "https://248707d56b73ff7f3a7b8bea98d4ca4a.r2.cloudflarestorage.com"
-        R2_BUCKET_NAME = "testbucket"
-
+        R2_ACCESS_KEY_ID = os.getenv("R2_ACCESS_KEY_ID")
+        R2_SECRET_ACCESS_KEY = os.getenv("R2_SECRET_ACCESS_KEY")
+        R2_ENDPOINT_URL = os.getenv("R2_ENDPOINT_URL")
+        R2_BUCKET_NAME = os.getenv("R2_BUCKET_NAME")
+        
         # Function to upload file to R2
         def upload_to_r2(file_path, bucket_name, object_name):
             """ Uploads a file to Cloudflare R2 """
