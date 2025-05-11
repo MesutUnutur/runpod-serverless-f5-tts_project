@@ -3,8 +3,10 @@ import requests
 import os
 import base64
 from api import F5TTS
+from io import BytesIO
 from scipy.io.wavfile import write
-
+import uuid  # To generate unique names
+import boto3
 
 f5tts = F5TTS()
 
@@ -46,8 +48,40 @@ def handler(job):
             speed=speed,
             remove_silence=remove_silence
         )
-        
-        
+
+
+        audio_output_path = output_wave_file
+
+        R2_ACCESS_KEY_ID = "044d0781c69d25d9df28136537946eaa"
+        R2_SECRET_ACCESS_KEY = "ae489d15672c76a480a3788e48be294efa591228871e166c41cb9bc3a6135c9c"
+        R2_ENDPOINT_URL = "https://248707d56b73ff7f3a7b8bea98d4ca4a.r2.cloudflarestorage.com"
+        R2_BUCKET_NAME = "testbucket"
+
+        # Function to upload file to R2
+        def upload_to_r2(file_path, bucket_name, object_name):
+            """ Uploads a file to Cloudflare R2 """
+            s3_client = boto3.client(
+                "s3",
+                aws_access_key_id=R2_ACCESS_KEY_ID,
+                aws_secret_access_key=R2_SECRET_ACCESS_KEY,
+                endpoint_url=R2_ENDPOINT_URL,
+            )
+
+            if not os.path.exists(file_path):
+                print(f"❌ ERROR: File {file_path} does not exist.")
+                return False
+
+            try:
+                s3_client.upload_file(file_path, bucket_name, object_name)
+                print(f"✅ Uploaded to R2: {bucket_name}/{object_name}")
+
+            except Exception as e:
+                print(f"❌ Upload failed: {e}")
+                return False
+        object_name= f"output/F5tts/ttsF5_{uuid.uuid4().hex}.wav"
+
+
+        upload_to_r2(audio_output_path, R2_BUCKET_NAME, object_name)
         # Clean up temporary files
         os.remove(temp_filename)
         os.remove(output_wave_file)
@@ -55,7 +89,7 @@ def handler(job):
         
         # Return response
         return {
-            
+            "object_name" : object_name,
             "audio_sampling_rate": sampling_rate,
             "output_format": output_format
         }
