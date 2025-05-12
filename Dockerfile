@@ -21,10 +21,7 @@ RUN git clone https://github.com/SWivid/F5-TTS.git \
     && git submodule update --init --recursive \
     && pip install -e . --no-cache-dir
 
-ENV SHELL=/bin/bash
-
 VOLUME /root/.cache/huggingface/hub/
 
-EXPOSE 7860
+CMD ["python", "F5-TTS/src/f5_tts/handler.py"]
 
-WORKDIR /workspace/F5-TTS
