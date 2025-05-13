@@ -1,0 +1,16 @@
+{
+    "input": {
+      "text_input": "Hello, this voice is created by artificial intelligence",
+      "voice_reference": "https://pub-ef0f666385da4750bbb2f43a114574bb.r2.dev/elonmusk_short_voice_for_inference.mp3",
+      "famous_jpg": "https://pub-ef0f666385da4750bbb2f43a114574bb.r2.dev/elon_musk_image.jpg",
+      "transcript": "It'd be like an elevator like they used to have elevator operators. And then we, you know, we developed some simple circuitry to have elevators just automatically come to the floor that you.",
+      "seed": 42,
+      "remove_silence": true,
+      "speed": 1
+    },
+    "settings": {
+      "output_format": "wav",
+      "sampling_rate": 22050,
+      "enable_base64_output": true
+    }
+  }

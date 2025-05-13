@@ -10,6 +10,7 @@ import boto3
 from video_generate_from_voice_and_jpg import wav_to_mp4_with_original_size
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 f5tts = F5TTS()
@@ -22,7 +23,7 @@ def handler(job):
     text_input = job_input.get("text_input", "")  # Multiline text input
     voice_url = job_input.get("voice_reference")
     transcript = job_input.get("transcript", None)
-    #famous_jpg = job_input.get("famous_jpg", None)
+    famous_jpg = job_input.get("famous_jpg", "elon_musk_image.jpg")
     seed = job_input.get("seed", -1)  # Use the seed from job input or default to -1 for random
     # Get additional settings
     remove_silence = job_input.get("remove_silence", False)  # Whether to remove silence
@@ -53,13 +54,9 @@ def handler(job):
             speed=speed,
             remove_silence=remove_silence
         )
-
-        famous_jpg ="/Users/mesut/Desktop/f5-tts-project/F5-TTS/src/f5_tts/elon_musk_image.jpg"
         
         audio_output_path = output_wave_file
-        
 
-        
         R2_ACCESS_KEY_ID = os.getenv("R2_ACCESS_KEY_ID")
         R2_SECRET_ACCESS_KEY = os.getenv("R2_SECRET_ACCESS_KEY")
         R2_ENDPOINT_URL = os.getenv("R2_ENDPOINT_URL")

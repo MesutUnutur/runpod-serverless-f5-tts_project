@@ -16,7 +16,7 @@ def wav_to_mp4_with_original_size(wav_file, image_file, output_mp4):
         .output(
             image, audio,  # Pass both video and audio
             output_mp4,
-            vcodec="libx264",
+            vcodec="mpeg4",
             acodec="aac",
             audio_bitrate="192k",
             format="mp4",
